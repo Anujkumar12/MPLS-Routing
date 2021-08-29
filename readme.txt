@@ -1,40 +1,41 @@
-# MPLS Link Disjoint Routing implementation
+---------- MPLS Link Disjoint Routing implementation------------
 
-### Usage
+----------USAGE---------
 Using the Makefile
-```
-make
-```
+
+$ make
+
 OR
-```
-g++ -std=c++11 -I ./headers main.cpp -o routing
-```
+
+$ g++ -std=c++11 -I ./headers main.cpp -o routing
+
 This creates the *routing* executable, which can be run as:
-```
-./routing −top <topology_file> −conn <connections_file> −rt <routing_table_file> −ft <forwarding_tablefile> −path <paths_file> −flag <hop|dist> −p <0|1>
-```
+
+$ ./routing −top <topology_file> −conn <connections_file> −rt <routing_table_file> −ft <forwarding_tablefile> −path <paths_file> −flag <hop|dist> −p <0|1>
+
 
 There are test cases given already. Run as:
-```
-./routing -top top14.doc -conn NSFNET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag dist -p 0
 
-./routing -top top14.doc -conn NSFNET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag dist -p 1
+$ ./routing -top top14.doc -conn NSFNET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag dist -p 0
 
-./routing -top top14.doc -conn NSFNET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag hop -p 0
+$ ./routing -top top14.doc -conn NSFNET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag dist -p 1
 
-./routing -top top14.doc -conn NSFNET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag hop -p 1
-```
+$ ./routing -top top14.doc -conn NSFNET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag hop -p 0
 
-```
-./routing -top top24.doc -conn ARPANET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag dist -p 0
+$ ./routing -top top14.doc -conn NSFNET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag hop -p 1
 
-./routing -top top24.doc -conn ARPANET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag dist -p 1
 
-./routing -top top24.doc -conn ARPANET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag hop -p 0
 
-./routing -top top24.doc -conn ARPANET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag hop -p 1
-```
-## Outputs
+$ ./routing -top top24.doc -conn ARPANET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag dist -p 0
+
+$ ./routing -top top24.doc -conn ARPANET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag dist -p 1
+
+$ ./routing -top top24.doc -conn ARPANET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag hop -p 0
+
+$ ./routing -top top24.doc -conn ARPANET_100.doc -rt routingfile.txt -ft forwarding.txt -path pathfile.txt -flag hop -p 1
+
+---OUTPUTS----
+
 1. Routing Table: 
 	- [ Destination_node || Path || Path Cost ]
 	- Path is stored as : 1-2-3-4-5-6
@@ -52,8 +53,9 @@ There are test cases given already. Run as:
 4. Pathfile:
 	- [Total_connections  Admitted Connections]
 
-## Approach Used
-### Routing
+--------APPROACH USED-----------
+------ Routing -------
+
 The network is read into a adjacency list graph reperesentation. The Network is then represnted by an object of class Network.
 
 For finding the disjoint paths, the following approach is used:
@@ -66,8 +68,8 @@ For finding the disjoint paths, the following approach is used:
 Code structure:
     -Network class: Represents the network as a graph. Resposible for reading the topology.
     -Routing class: Takes the network object and creates the routing table for every node by the method discussed above.
- 
- ### Forwading
+    
+ ------ Forwarding-----
  Each router maintains a list of already used labels. Label counters start from 0. For each new connection established and the path chosen, labels are assigned and updated along the routers of the path.
  
  Both the optimistic and pessimistic approachs are available. For all the links along a path, the corresponding condition is checked and if satisified by all the links, the connection is accepted.
